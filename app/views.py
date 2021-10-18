@@ -11,7 +11,10 @@ PAGE_SIZE = 20
 COLUMNS = [
     'imo',
     'ship_name',
-    'technical_efficiency_number'
+    'technical_efficiency_number',
+    'ship_type',
+    'issue_date',
+    'expiry_date'
 ]
 
 
@@ -145,7 +148,7 @@ def emission_detail(request, imo=None):
 
     # Set dates (if present) to iso format, necessary for form
     # We don't use this in class, but you will need it for your project
-    for field in ['doc_issue_date', 'doc_expiry_date']:
+    for field in ['issue_date', 'expiry_date']:
         if initial_values.get(field, None) is not None:
             initial_values[field] = initial_values[field].isoformat()
 
@@ -163,3 +166,47 @@ def emission_detail(request, imo=None):
         'success': success
     }
     return render(request, 'emission_detail.html', context)
+
+def aggregation(request):
+    """get aggregated queries"""
+    msg = None
+    order_by = request.GET.get('order_by', '')
+    order_by = order_by if order_by in ['ship_type','no_of_ship','min_eedi','max_eedi','avg_eedi'] else 'no_of_ship'
+
+    with connections['default'].cursor() as cursor:
+        
+        cursor.execute(f'''
+            SELECT ship_type, COUNT(DISTINCT (imo, ship_name)) as no_of_ship, MIN(technical_efficiency_number) as min_eedi, MAX(technical_efficiency_number) as max_eedi, AVG(technical_efficiency_number) as avg_eedi
+            FROM co2emission_reduced
+		    GROUP BY ship_type
+            ORDER BY {order_by}
+        ''')
+        rows = namedtuplefetchall(cursor)
+
+
+    context = {
+        'nbar': 'aggregation',
+        'rows': rows,
+        'msg': msg,
+        'order_by': order_by
+    }
+    return render(request, 'aggregation.html', context)
+
+def visual(request):
+    
+
+    with connections['default'].cursor() as cursor:
+        
+        cursor.execute(f'''
+            SELECT ship_type, COUNT(DISTINCT (imo, ship_name)) as no_of_ship, MIN(technical_efficiency_number) as min_eedi, MAX(technical_efficiency_number) as max_eedi, AVG(technical_efficiency_number) as avg_eedi
+            FROM co2emission_reduced
+		    GROUP BY ship_type
+            ORDER BY no_of_ship DESC
+        ''')
+        rows = namedtuplefetchall(cursor)
+
+    context = {
+        'rows': rows,
+    }
+
+    return render(request, 'visual.html', context)

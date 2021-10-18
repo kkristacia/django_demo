@@ -5,6 +5,7 @@
   {% block title %}{% endblock %} | BT5110
 </title>
   <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   <style type="text/css">
@@ -58,6 +59,12 @@
       </li>
       <li class="{% if nbar == 'emissions' %}active{% endif %}">
         <a href="/emissions"><span class="glyphicon glyphicon-oil"></span> Emissions</a>
+      </li>
+      <li class="{% if nbar == 'aggregation' %}active{% endif %}">
+        <a href="/aggregation"><span class="glyphicon glyphicon-oil"></span> Aggregate Metrics</a>
+      </li>
+      <li class="{% if nbar == 'visual' %}active{% endif %}">
+        <a href="/visual"><span class="glyphicon glyphicon-oil"></span> Visualizations</a>
       </li>
     </ul>
   </div>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %} Aggregation {% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="container" style="padding-bottom: 50px;">
+  <h2>Aggregation</h2>
+  {% if msg %}
+    <span class="text-success h4">{{ msg }}</span>
+  {% endif %}
+  <br/>
+  <br/>
+  <div class="table-responsive">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th class="ordering" onclick="window.location='/aggregation/?order_by=ship_type'">Ship Type</th>
+          <th class="ordering" onclick="window.location='/aggregation/?order_by=no_of_ship'">Number of Ships</th>
+          <th class="ordering" onclick="window.location='/aggregation/?order_by=min_eedi'">Min EEDI</th>
+          <th class="ordering" onclick="window.location='/aggregation/?order_by=max_eedi'">Max EEDI</th>
+          <th class="ordering" onclick="window.location='/aggregation/?order_by=avg_eedi'">Average EEDI</th>
+        </tr>
+      </thead>
+      {% for row in rows %}
+        <tr>
+          {% for val in row %}
+          <td>{{ val|default:'' }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

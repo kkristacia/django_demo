@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %} Aggregation {% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="container" style="padding-bottom: 50px;">
+  <h2>Visualizations</h2>
+  {% if msg %}
+    <span class="text-success h4">{{ msg }}</span>
+  {% endif %}
+  <br/>
+  <br/>
+  <div class="col-md-5">
+    <canvas id="myChart" width="250" height="250"></canvas>
+      <script>
+      var ctx = document.getElementById('myChart');
+      var myChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+              labels: [{% for row in rows %}  '{{ row.ship_type }}',  {% endfor %}],
+              datasets: [{
+                  label: 'Count',
+                  data: [{% for row in rows %}  '{{ row.no_of_ship }}',  {% endfor %}],
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(243, 156, 255, 0.2)',
+                      'rgba(156, 255, 210, 0.2)',
+                      'rgba(171, 156, 255, 0.2)',
+                      'rgba(206, 255, 156, 0.2)',
+                      'rgba(158, 184, 181, 0.2)',
+                      'rgba(211, 214, 176, 0.2)',
+                      'rgba(161, 136, 130, 0.2)',
+                      'rgba(30, 252, 75, 0.2)',
+                      'rgba(155, 114, 186, 0.2)',
+                      'rgba(119, 119, 125, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)',
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)',
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                    display: true,
+                    text: 'Number of Ships per Ship Type'
+                    },
+            },
+            scales: {
+                  y: {beginAtZero: true}
+              },
+          },
+      });
+      </script>    
+  </div>
+  <br/>
+  <br/>
+  <div style="width:75%;">
+    <canvas id="eediChart" width="400" height="400"></canvas>
+      <script>
+      var config = {
+            type: "bar",
+            data: {
+                labels: [{% for row in rows %}  '{{ row.ship_type }}',  {% endfor %}], 
+                datasets: [
+                {
+                    label: "min",
+                    backgroundColor: "rgba(255, 255, 255, 1.0)",
+                    borderColor: "rgba(255, 255, 255, 1.0)",
+                    borderWidth: 0,
+                    data: [{% for row in rows %}  '{{ row.min_eedi }}',  {% endfor %}],
+                    fill: false,
+                    radius: 0,
+                },
+                {
+                    label: "average",
+                    backgroundColor: "rgba(121, 200, 121, 0.8)",
+                    borderColor: "rgba(255, 255, 255, 0.0)",
+                    borderWidth: 0,
+                    data: [{% for row in rows %}  '{{ row.avg_eedi }}',  {% endfor %}],
+                    fill: "-1",
+                    line: false,
+                },
+                {
+                    label: "max",
+                    backgroundColor: "rgba(153, 102, 255, 0.8)",
+                    borderColor: "rgba(255, 255, 255, 0.0)",
+                    borderWidth: 0,
+                    data: [{% for row in rows %}  '{{ row.max_eedi }}',  {% endfor %}],
+                    fill: "-1",
+                    line: false,
+                    radius: 0,
+                },
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                    display: true,
+                    text: 'Min, Average, Max EEDI by Type of Ships'
+                    },
+                    tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    displayColors: false,
+                    },
+                }, 
+                scales: {
+                    x: {
+                    stacked: true,
+                    format: "HH mm",},
+                    y: {
+                    stacked: false,
+                    scaleLabel: {
+                    display: true,
+                    labelString: "value"}}
+                },    
+            },
+        };
+            window.onload = function() {
+            var ctx = document.getElementById("eediChart").getContext("2d");
+            window.myLine = new Chart(ctx, config);
+            };
+      </script>    
+  </div>
+</div>
+{% endblock %}

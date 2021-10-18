@@ -148,9 +148,9 @@ def emission_detail(request, imo=None):
 
     # Set dates (if present) to iso format, necessary for form
     # We don't use this in class, but you will need it for your project
-    for field in ['issue_date', 'expiry_date']:
-        if initial_values.get(field, None) is not None:
-            initial_values[field] = initial_values[field].isoformat()
+    #for field in ['issue_date', 'expiry_date']:
+        #if initial_values.get(field, None) is not None:
+            #initial_values[field] = initial_values[field].isoformat()
 
     # Initialize form if not done already
     form = form or ImoForm(initial=initial_values)

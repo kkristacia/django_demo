@@ -89,7 +89,7 @@
                     borderColor: "rgba(255, 255, 255, 0.0)",
                     borderWidth: 0,
                     data: [{% for row in rows %}  '{{ row.max_eedi }}',  {% endfor %}],
-                    fill: "-1",
+                    fill: false,
                     line: false,
                     radius: 0,
                 },
@@ -108,7 +108,7 @@
                     borderColor: "rgba(255, 255, 255, 1.0)",
                     borderWidth: 0,
                     data: [{% for row in rows %}  '{{ row.min_eedi }}',  {% endfor %}],
-                    fill: false,
+                    fill: "-1",
                     radius: 0,
                 },
                 ]

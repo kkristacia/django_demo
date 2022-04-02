@@ -1,3 +1,10 @@
+Project for BT5110
+Kristacia Kang
+
+[heroku link](http://kk-django-demo.herokuapp.com/)
+
+Visualizations done with [Chartjs](https://www.chartjs.org/)
+
 # BT5110 - Your first Django app
 
 A barebones Django app used for the [BT5110](https://nusmods.com/modules/BT5110/data-management-and-warehousing) module at NUS. Shows how to create a web app that
